@@ -1,4 +1,4 @@
-'use client';
+'use client'; //teste
 
 import { client, urlFor } from '@/lib/sanity.client';
 import { motion, useMotionTemplate, useMotionValue, useScroll, useTransform } from 'framer-motion';
