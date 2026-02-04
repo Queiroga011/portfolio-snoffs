@@ -1,14 +1,31 @@
-// sanity/schemaTypes/project.ts
-const project = {
+import { defineField, defineType } from 'sanity'
+
+export default defineType({
   name: 'project',
   title: 'Projetos',
   type: 'document',
   fields: [
-    { name: 'title', title: 'Título', type: 'string' },
-    { name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' } },
-    { name: 'image', title: 'Imagem', type: 'image' },
-    { name: 'description', title: 'Descrição', type: 'text' },
+    defineField({
+      name: 'title',
+      title: 'Título do Projeto',
+      type: 'string',
+    }),
+    defineField({
+      name: 'slug',
+      title: 'URL (Slug)',
+      type: 'slug',
+      options: { source: 'title' },
+    }),
+    defineField({
+      name: 'image',
+      title: 'Capa do Projeto',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'description',
+      title: 'Descrição',
+      type: 'text',
+    }),
   ],
-}
-
-export default project
+})
