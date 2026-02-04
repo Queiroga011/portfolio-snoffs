@@ -17,7 +17,7 @@ function getAge(birthDateString: string) {
 }
 
 // --- Componente Spotlight ---
-function SpotlightCard({ children, className = "", spotlightColor = "rgba(59, 130, 246, 0.15)" }: any) {
+function SpotlightCard({ children, className = "", spotlightColor = "rgba(255, 255, 255, 0.1)" }: any) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -125,7 +125,7 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* CORE SKILLS - AJUSTADO: ESPAÇAMENTO E TROCA DE CARDS */}
+        {/* CORE SKILLS - AGORA COM CORES INDIVIDUAIS */}
         <section id="specialties" className="mb-40 scroll-mt-28">
           <div className="flex items-end gap-4 mb-10">
              <h2 className="text-3xl font-bold text-white">Core Skills</h2>
@@ -134,18 +134,21 @@ export default function Portfolio() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            {/* 1. DESIGN GRÁFICO */}
+            {/* 1. DESIGN GRÁFICO (ROXO) */}
             <Link href="/skills/design-grafico" className="md:col-span-2 block">
-              <SpotlightCard className="rounded-3xl p-10 flex flex-col justify-between min-h-[320px] h-full">
-                {/* ADICIONADO mb-8 PARA DESGRUDAR O ÍCONE DO TEXTO */}
+              <SpotlightCard 
+                className="rounded-3xl p-10 flex flex-col justify-between min-h-[320px] h-full"
+                spotlightColor="rgba(168, 85, 247, 0.2)" // Roxo
+              >
                 <div className="flex justify-between items-start mb-8">
-                  <div className="w-14 h-14 flex items-center justify-center bg-zinc-800/50 rounded-2xl border border-white/5">
-                    <PenTool className="text-white" size={28} />
+                  {/* Ícone com BG colorido */}
+                  <div className="w-14 h-14 flex items-center justify-center bg-purple-500/10 rounded-2xl border border-purple-500/20">
+                    <PenTool className="text-purple-400" size={28} />
                   </div>
-                  <ArrowUpRight className="text-zinc-600 group-hover:text-blue-500 group-hover:rotate-45 transition-all duration-300" />
+                  <ArrowUpRight className="text-zinc-600 group-hover:text-purple-400 group-hover:rotate-45 transition-all duration-300" />
                 </div>
                 <div>
-                  <span className="text-blue-500 font-mono text-xs uppercase tracking-widest mb-2 block">Main Focus</span>
+                  <span className="text-purple-400 font-mono text-xs uppercase tracking-widest mb-2 block">Main Focus</span>
                   <h3 className="text-4xl font-bold text-white mb-3">Design Gráfico</h3>
                   <p className="text-zinc-400 max-w-md leading-relaxed text-sm">
                     Identidade visual e direção de arte. Layouts estratégicos baseados em publicidade.
@@ -154,12 +157,14 @@ export default function Portfolio() {
               </SpotlightCard>
             </Link>
 
-            {/* 2. EDIÇÃO DE VÍDEO */}
+            {/* 2. EDIÇÃO DE VÍDEO (CYAN/SKY) */}
             <Link href="/skills/edicao-video" className="md:col-span-1 block">
-              <SpotlightCard className="rounded-3xl p-10 flex flex-col justify-between bg-zinc-900/40 min-h-[320px] h-full">
-                {/* ADICIONADO mb-8 */}
-                <div className="w-14 h-14 flex items-center justify-center bg-zinc-800/50 rounded-2xl border border-white/5 mb-8">
-                    <Video className="text-white" size={28} />
+              <SpotlightCard 
+                className="rounded-3xl p-10 flex flex-col justify-between bg-zinc-900/40 min-h-[320px] h-full"
+                spotlightColor="rgba(14, 165, 233, 0.2)" // Sky
+              >
+                <div className="w-14 h-14 flex items-center justify-center bg-sky-500/10 rounded-2xl border border-sky-500/20 mb-8">
+                    <Video className="text-sky-400" size={28} />
                 </div>
                 <div>
                     <h3 className="text-2xl font-bold text-white mb-2">Edição de Vídeo</h3>
@@ -168,12 +173,14 @@ export default function Portfolio() {
               </SpotlightCard>
             </Link>
 
-            {/* 3. MOTION DESIGN */}
+            {/* 3. MOTION DESIGN (AMARELO) */}
             <Link href="/skills/motion-design" className="md:col-span-1 block">
-              <SpotlightCard className="rounded-3xl p-8 flex flex-col justify-between min-h-[250px] h-full">
-                {/* ADICIONADO mb-8 */}
-                <div className="w-12 h-12 flex items-center justify-center bg-zinc-800/50 rounded-xl border border-white/5 mb-8">
-                    <Layers className="text-white" size={24} />
+              <SpotlightCard 
+                className="rounded-3xl p-8 flex flex-col justify-between min-h-[250px] h-full"
+                spotlightColor="rgba(234, 179, 8, 0.2)" // Yellow
+              >
+                <div className="w-12 h-12 flex items-center justify-center bg-yellow-500/10 rounded-xl border border-yellow-500/20 mb-8">
+                    <Layers className="text-yellow-400" size={24} />
                 </div>
                 <div>
                     <h3 className="text-xl font-bold text-white mb-1">Motion Design</h3>
@@ -182,13 +189,12 @@ export default function Portfolio() {
               </SpotlightCard>
             </Link>
 
-            {/* 4. IA (SEPARADO, SEM N8N) */}
+            {/* 4. IA (AZUL) */}
             <Link href="/skills/ia" className="md:col-span-1 block">
               <SpotlightCard 
                   className="rounded-3xl p-8 flex flex-col justify-between bg-blue-900/5 border-blue-500/10 min-h-[250px] h-full"
-                  spotlightColor="rgba(59, 130, 246, 0.25)"
+                  spotlightColor="rgba(59, 130, 246, 0.25)" // Blue
               >
-                {/* ADICIONADO mb-8 */}
                 <div className="w-12 h-12 flex items-center justify-center bg-blue-500/10 rounded-xl border border-blue-500/20 mb-8">
                   <Bot className="text-blue-400" size={24} />
                 </div>
@@ -199,12 +205,14 @@ export default function Portfolio() {
               </SpotlightCard>
             </Link>
 
-            {/* 5. n8n (SUBSTITUINDO CODE & TECH) */}
+            {/* 5. n8n (LARANJA) */}
             <Link href="/skills/n8n" className="md:col-span-1 block">
-              <SpotlightCard className="rounded-3xl p-8 flex flex-col justify-between min-h-[250px] h-full">
-                {/* ADICIONADO mb-8 */}
-                <div className="w-12 h-12 flex items-center justify-center bg-zinc-800/50 rounded-xl border border-white/5 mb-8">
-                    <Workflow className="text-white" size={24} />
+              <SpotlightCard 
+                className="rounded-3xl p-8 flex flex-col justify-between min-h-[250px] h-full"
+                spotlightColor="rgba(249, 115, 22, 0.25)" // Orange
+              >
+                <div className="w-12 h-12 flex items-center justify-center bg-orange-500/10 rounded-xl border border-orange-500/20 mb-8">
+                    <Workflow className="text-orange-500" size={24} />
                 </div>
                 <div>
                     <h3 className="text-xl font-bold text-white mb-1">n8n Automation</h3>
@@ -216,10 +224,9 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* PROJETOS - TÍTULO EM INGLÊS + DESCRIÇÃO AJUSTADA */}
+        {/* PROJETOS */}
         <section id="projects" className="mb-40 scroll-mt-28">
             <div className="flex items-center justify-between mb-12">
-               {/* TÍTULO ALTERADO PARA INGLÊS */}
                <h2 className="text-3xl font-bold text-white tracking-tight">Selected Works</h2>
                <span className="font-mono text-xs text-zinc-600 uppercase hidden md:block">/// Recent Work</span>
             </div>
@@ -240,7 +247,6 @@ export default function Portfolio() {
                         <h3 className="text-3xl md:text-5xl font-bold text-zinc-400 group-hover:text-white transition-transform duration-500 ease-out group-hover:-translate-y-3 origin-left">
                           {project.title}
                         </h3>
-                        {/* DESCRIÇÃO: SEM MAIÚSCULAS (normal-case), FONTE MENOR (text-xs) E SANS-SERIF */}
                         <p className="absolute bottom-[-5px] left-0 text-blue-400 text-xs font-sans normal-case opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 ease-out">
                           {project.shortDescription || "Ver detalhes do projeto"}
                         </p>
@@ -271,6 +277,7 @@ export default function Portfolio() {
             </div>
         </section>
 
+        {/* FOOTER - INSTAGRAM RESTAURADO */}
         <footer className="py-20 text-center flex flex-col items-center justify-center">
           <motion.div style={{ y: yParallax }}>
             <h2 className="text-[12vw] font-black tracking-tighter text-zinc-900 select-none uppercase leading-none hover:text-zinc-800 transition-colors cursor-default">
@@ -288,6 +295,9 @@ export default function Portfolio() {
             <div className="flex gap-6 mt-4 md:mt-0">
                <a href="https://www.linkedin.com/in/queiroga011/" target="_blank" className="hover:text-blue-500 transition flex items-center gap-2">
                  <Linkedin size={12} /> LinkedIn
+               </a>
+               <a href="https://www.instagram.com/queiroga011" target="_blank" className="hover:text-blue-500 transition flex items-center gap-2">
+                 <Instagram size={12} /> Instagram
                </a>
             </div>
           </div>
