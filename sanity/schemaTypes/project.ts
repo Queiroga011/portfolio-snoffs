@@ -32,19 +32,20 @@ export default defineType({
       type: 'image',
       options: { hotspot: true },
     }),
-    // ESTE É O CAMPO QUE FALTA NO SEU PRINT:
+    // CAMPO NOVO 1: Descrição para a Home
     defineField({
       name: 'shortDescription',
       title: 'Descrição Resumida (Home)',
       type: 'string',
       description: 'Texto curto que aparece ao passar o mouse na Home.'
     }),
+    // CAMPO NOVO 2: Descrição Interna
     defineField({
       name: 'content',
       title: 'Descrição Completa',
       type: 'text',
     }),
-    // ESTE TAMBÉM FALTA:
+    // CAMPO NOVO 3: Galeria de Fotos
     defineField({
       name: 'gallery',
       title: 'Galeria de Imagens',
