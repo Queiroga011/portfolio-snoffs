@@ -2,7 +2,7 @@
 
 import { client, urlFor } from '@/lib/sanity.client';
 import { motion, useMotionTemplate, useMotionValue, useScroll, useTransform } from 'framer-motion';
-import { PenTool, Video, Zap, ArrowUpRight, MousePointer2, Instagram, Linkedin } from 'lucide-react';
+import { PenTool, Video, Zap, ArrowUpRight, MousePointer2, Instagram, Linkedin, Layers, Terminal } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
@@ -43,26 +43,19 @@ export default function Portfolio() {
 
   useEffect(() => {
     setAge(getAge("2003-05-01"));
-    
     const fetchProjects = async () => {
       try {
-        // QUERY AJUSTADA: Pedindo explicitamente o shortDescription
-        const query = `*[_type == "project"] | order(_createdAt asc) {
+        // QUERY COMPLETA: Garante que todos os campos venham do Sanity
+        const data = await client.fetch(`*[_type == "project"] | order(_createdAt asc) {
           _id,
           title,
           shortDescription,
           role,
-          year,
-          slug,
-          image
-        }`;
-        const data = await client.fetch(query);
+          slug
+        }`);
         setProjects(data);
-      } catch (error) { 
-        console.error("Erro ao buscar projetos:", error); 
-      }
+      } catch (error) { console.error(error); }
     };
-    
     fetchProjects();
     const handleMouseMove = (e: MouseEvent) => setMousePos({ x: e.clientX, y: e.clientY });
     window.addEventListener('mousemove', handleMouseMove);
@@ -96,15 +89,15 @@ export default function Portfolio() {
             </h1>
         </section>
 
-        {/* CORE SKILLS */}
+        {/* CORE SKILLS - RESTAURADO */}
         <section id="specialties" className="mb-40 scroll-mt-28">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/skills/design-grafico" className="md:col-span-2 block">
                 <SpotlightCard className="rounded-3xl p-10 flex flex-col justify-between min-h-[320px]">
                     <PenTool className="text-white mb-4" size={28} />
                     <div>
-                    <h3 className="text-4xl font-bold text-white mb-3">Design Gráfico</h3>
-                    <p className="text-zinc-400 text-sm">Identidade visual e direção de arte estratégica.</p>
+                      <h3 className="text-4xl font-bold text-white mb-3">Design Gráfico</h3>
+                      <p className="text-zinc-400 text-sm">Identidade visual e direção de arte estratégica baseada em publicidade.</p>
                     </div>
                 </SpotlightCard>
             </Link>
@@ -112,64 +105,77 @@ export default function Portfolio() {
                 <SpotlightCard className="rounded-3xl p-10 flex flex-col justify-between bg-zinc-900/40 min-h-[320px]">
                     <Video className="text-white mb-4" size={28} />
                     <h3 className="text-2xl font-bold text-white mb-2">Edição de Vídeo</h3>
-                    <p className="text-zinc-500 text-sm">Narrativa visual dinâmica e storytelling.</p>
+                    <p className="text-zinc-500 text-sm">Narrativa visual dinâmica, cortes precisos e storytelling.</p>
                 </SpotlightCard>
+            </Link>
+            <Link href="/skills/motion-design" className="block">
+              <SpotlightCard className="rounded-3xl p-8 flex flex-col justify-between min-h-[250px]">
+                  <Layers className="text-white" size={24} />
+                  <h3 className="text-xl font-bold text-white mb-1">Motion Design</h3>
+                  <p className="text-zinc-500 text-xs">Animação de interfaces e elementos gráficos.</p>
+              </SpotlightCard>
+            </Link>
+            <Link href="/skills/ia-n8n" className="block">
+              <SpotlightCard className="rounded-3xl p-8 flex flex-col justify-between bg-blue-900/5 min-h-[250px]" spotlightColor="rgba(59, 130, 246, 0.25)">
+                  <Zap className="text-blue-400" size={24} />
+                  <h3 className="text-xl font-bold text-white mb-1">IA & n8n</h3>
+                  <p className="text-blue-200/70 text-xs">Integração de modelos de IA e automação de fluxos.</p>
+              </SpotlightCard>
+            </Link>
+            <Link href="/skills/ia-n8n" className="block">
+              <SpotlightCard className="rounded-3xl p-8 flex flex-col justify-between min-h-[250px]">
+                  <Terminal className="text-white" size={24} />
+                  <h3 className="text-xl font-bold text-white mb-1">Code & Tech</h3>
+                  <p className="text-zinc-500 text-xs">Desenvolvimento de interfaces modernas e funcionais.</p>
+              </SpotlightCard>
             </Link>
           </div>
         </section>
 
-        {/* PROJETOS - ALINHAMENTO E EFEITO HOVER */}
+        {/* PROJETOS - EFEITO HOVER AJUSTADO */}
         <section id="projects" className="mb-40 scroll-mt-28">
             <div className="flex flex-col border-t border-zinc-900">
-              {projects.length > 0 ? (
-                projects.map((project, i) => (
-                  <Link key={project._id || i} href={`/projects/${project.slug?.current}`} className="group relative border-b border-zinc-900 py-16 px-2 transition-all duration-500 hover:bg-zinc-900/30 block overflow-hidden">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between relative h-20">
-                      
-                      <div className="flex items-center gap-6 md:w-2/3 h-full">
-                        <span className="font-mono text-xs text-zinc-600 group-hover:text-blue-500 transition-colors shrink-0">0{i + 1}</span>
-                        
-                        <div className="relative flex flex-col justify-center overflow-hidden h-full w-full">
-                          {/* TÍTULO QUE SOBE */}
-                          <h3 className="text-3xl md:text-5xl font-bold text-zinc-400 group-hover:text-white transition-all duration-500 ease-in-out group-hover:-translate-y-[150%]">
-                            {project.title}
-                          </h3>
-                          {/* DESCRIÇÃO RESUMIDA QUE APARECE NO LUGAR DO TÍTULO */}
-                          <p className="absolute left-0 text-blue-400 text-sm font-mono uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-[150%] group-hover:translate-y-0 transition-all duration-500 ease-in-out">
-                            {project.shortDescription || "Ver Detalhes do Projeto"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-6 justify-end md:w-1/3">
-                         <span className="text-[10px] font-mono uppercase text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 group-hover:border-blue-500/30 group-hover:text-blue-400">
-                           {project.role}
-                         </span>
-                         <ArrowUpRight size={20} className="text-zinc-600 group-hover:text-white group-hover:rotate-45 transition-all duration-500" />
+              {projects.map((project, i) => (
+                <Link key={project._id || i} href={`/projects/${project.slug?.current}`} className="group relative border-b border-zinc-900 py-16 px-2 transition-all duration-500 hover:bg-zinc-900/30 block overflow-hidden">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between relative h-20">
+                    <div className="flex items-center gap-6 md:w-2/3 h-full">
+                      <span className="font-mono text-xs text-zinc-600 group-hover:text-blue-500 transition-colors shrink-0">0{i + 1}</span>
+                      <div className="relative flex flex-col justify-center overflow-hidden h-full w-full">
+                        <h3 className="text-3xl md:text-5xl font-bold text-zinc-400 group-hover:text-white transition-all duration-500 ease-in-out group-hover:-translate-y-[150%]">
+                          {project.title}
+                        </h3>
+                        <p className="absolute left-0 text-blue-400 text-sm font-mono uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-[150%] group-hover:translate-y-0 transition-all duration-500 ease-in-out">
+                          {project.shortDescription || "Ver Detalhes do Projeto"}
+                        </p>
                       </div>
                     </div>
-                  </Link>
-                ))
-              ) : (
-                <p className="py-10 text-zinc-600 font-mono text-xs uppercase">Carregando projetos...</p>
-              )}
+                    <div className="flex items-center gap-6 justify-end md:w-1/3">
+                       <span className="text-[10px] font-mono uppercase text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 group-hover:border-blue-500/30 group-hover:text-blue-400">
+                         {project.role}
+                       </span>
+                       <ArrowUpRight size={20} className="text-zinc-600 group-hover:text-white group-hover:rotate-45 transition-all duration-500" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
         </section>
 
+        {/* FOOTER - RESTAURADO */}
         <footer className="py-20 text-center flex flex-col items-center justify-center">
           <motion.div style={{ y: yParallax }}>
             <h2 className="text-[12vw] font-black tracking-tighter text-zinc-900 uppercase leading-none hover:text-zinc-800 transition-colors">Snoffs.com</h2>
           </motion.div>
           <div className="mt-[-6vw] relative z-10">
-             <a href="mailto:eduardo@snoffs.com" className="bg-white text-black px-10 py-4 rounded-full font-bold hover:scale-105 transition-all flex items-center gap-2 shadow-xl shadow-white/5">
+             <a href="mailto:eduardo@snoffs.com" className="bg-white text-black px-10 py-4 rounded-full font-bold hover:scale-105 transition-all flex items-center gap-2 shadow-xl">
                <MousePointer2 size={16} /> <span className="uppercase tracking-widest text-xs">Iniciar Projeto</span>
              </a>
           </div>
           <div className="w-full flex justify-between items-center text-[10px] text-zinc-600 font-mono uppercase tracking-widest border-t border-zinc-900 pt-8 mt-20">
             <span>Eduardo Queiroga © 2026</span>
             <div className="flex gap-6">
-              <a href="https://instagram.com/queiroga011" target="_blank" rel="noopener noreferrer"><Instagram size={14} className="hover:text-white cursor-pointer" /></a>
-              <a href="https://linkedin.com/in/queiroga011" target="_blank" rel="noopener noreferrer"><Linkedin size={14} className="hover:text-white cursor-pointer" /></a>
+              <Instagram size={14} className="hover:text-white cursor-pointer" />
+              <Linkedin size={14} className="hover:text-white cursor-pointer" />
             </div>
           </div>
         </footer>
