@@ -1,5 +1,6 @@
 'use client';
 
+import { client, urlFor } from '@/lib/sanity.client';
 import { motion, useMotionTemplate, useMotionValue, useScroll, useTransform } from 'framer-motion';
 import { PenTool, Video, Zap, ArrowUpRight, Layers, MousePointer2, Terminal, Instagram, Linkedin } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -56,9 +57,19 @@ export default function Portfolio() {
   
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [age, setAge] = useState(0);
+  const [projects, setProjects] = useState<any[]>([]);
 
   useEffect(() => {
     setAge(getAge("2003-05-01"));
+    
+    // BUSCA DE PROJETOS NO SANITY
+    const fetchProjects = async () => {
+      const query = `*[_type == "project"] | order(_createdAt desc)`;
+      const data = await client.fetch(query);
+      setProjects(data);
+    };
+    fetchProjects();
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({ x: e.clientX, y: e.clientY });
     };
@@ -117,7 +128,7 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* CORE SKILLS - Links Dinâmicos */}
+        {/* CORE SKILLS */}
         <section id="specialties" className="mb-40 scroll-mt-28">
           <div className="flex items-end gap-4 mb-10">
              <h2 className="text-3xl font-bold text-white">Core Skills</h2>
@@ -205,75 +216,61 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* PROJETOS - Links Dinâmicos */}
+        {/* PROJETOS - SEÇÃO DINÂMICA */}
         <section id="projects" className="mb-40 scroll-mt-28">
-           <div className="flex items-center justify-between mb-12">
-              <h2 className="text-3xl font-bold text-white tracking-tight">Projetos Selecionados</h2>
-              <span className="font-mono text-xs text-zinc-600 uppercase hidden md:block">/// Recent Work</span>
-           </div>
+            <div className="flex items-center justify-between mb-12">
+               <h2 className="text-3xl font-bold text-white tracking-tight">Projetos Selecionados</h2>
+               <span className="font-mono text-xs text-zinc-600 uppercase hidden md:block">/// Recent Work</span>
+            </div>
 
-           <div className="flex flex-col border-t border-zinc-900">
-             {[
-               { 
-                 title: "Campanha Visual OPL", 
-                 role: "Design & Vídeo", 
-                 year: "2025",
-                 slug: "campanha-visual-opl",
-                 desc: "Identidade visual completa e peças de motion."
-               },
-               { 
-                 title: "Trello Automation Bot", 
-                 role: "n8n + IA", 
-                 year: "2025",
-                 slug: "trello-automation-bot",
-                 desc: "Geração automática de relatórios de demandas." 
-               },
-               { 
-                 title: "Design Trends Tracker", 
-                 role: "Python/Automação", 
-                 year: "2024",
-                 slug: "design-trends-tracker",
-                 desc: "Monitoramento automático de tendências visuais."
-               },
-               { 
-                 title: "Personal Portfolio", 
-                 role: "Next.js", 
-                 year: "2024",
-                 slug: "personal-portfolio",
-                 desc: "Interface moderna desenvolvida com React."
-               }
-             ].map((project, i) => (
-               <Link 
-                 key={i}
-                 href={`/projects/${project.slug}`}
-                 className="group relative border-b border-zinc-900 py-12 px-2 cursor-pointer transition-all duration-300 hover:bg-zinc-900/30 block"
-               >
-                 <div className="flex flex-col md:flex-row md:items-center justify-between z-10 relative">
-                   
-                   <div className="flex items-baseline gap-6 md:w-1/2">
-                     <span className="font-mono text-xs text-zinc-600 group-hover:text-blue-500 transition-colors">0{i + 1}</span>
-                     <div>
-                       <h3 className="text-3xl md:text-5xl font-bold text-zinc-400 group-hover:text-white group-hover:translate-x-2 transition-all duration-300">
-                         {project.title}
-                       </h3>
-                       <p className="text-zinc-500 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0 hidden md:block">
-                         {project.desc}
-                       </p>
-                     </div>
-                   </div>
-
-                   <div className="flex items-center gap-6 mt-4 md:mt-0 justify-end md:w-1/2">
-                      <span className="text-[10px] font-mono uppercase text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 group-hover:border-blue-500/30 group-hover:text-blue-400 transition-colors">
-                        {project.role}
-                      </span>
-                      <div className="flex items-center gap-2 text-zinc-600 group-hover:text-white transition-colors">
-                        <ArrowUpRight size={20} className="group-hover:rotate-45 transition-transform duration-300" />
+            <div className="flex flex-col border-t border-zinc-900">
+              {projects.length > 0 ? (
+                projects.map((project, i) => (
+                  <Link 
+                    key={project._id || i}
+                    href={`/projects/${project.slug?.current}`}
+                    className="group relative border-b border-zinc-900 py-12 px-2 cursor-pointer transition-all duration-300 hover:bg-zinc-900/30 block"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center justify-between z-10 relative">
+                      
+                      <div className="flex items-baseline gap-6 md:w-1/2">
+                        <span className="font-mono text-xs text-zinc-600 group-hover:text-blue-500 transition-colors">0{i + 1}</span>
+                        <div>
+                          <h3 className="text-3xl md:text-5xl font-bold text-zinc-400 group-hover:text-white group-hover:translate-x-2 transition-all duration-300">
+                            {project.title}
+                          </h3>
+                          <p className="text-zinc-500 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0 hidden md:block">
+                            {project.description}
+                          </p>
+                        </div>
                       </div>
-                   </div>
-                 </div>
-               </Link>
-             ))}
-           </div>
+
+                      <div className="flex items-center gap-6 mt-4 md:mt-0 justify-end md:w-1/2">
+                         {/* IMAGEM FLUTUANTE NO HOVER (Opcional, se quiser que apareça ao passar o mouse) */}
+                         {project.image && (
+                           <div className="hidden lg:block absolute right-48 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none w-32 h-20 overflow-hidden rounded-lg border border-white/10">
+                             <img 
+                                src={urlFor(project.image).url()} 
+                                alt="" 
+                                className="w-full h-full object-cover"
+                             />
+                           </div>
+                         )}
+
+                         <span className="text-[10px] font-mono uppercase text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 group-hover:border-blue-500/30 group-hover:text-blue-400 transition-colors">
+                           {project.role}
+                         </span>
+                         <div className="flex items-center gap-2 text-zinc-600 group-hover:text-white transition-colors">
+                           <ArrowUpRight size={20} className="group-hover:rotate-45 transition-transform duration-300" />
+                         </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p className="py-10 text-zinc-500 font-mono text-xs">Carregando projetos do Sanity...</p>
+              )}
+            </div>
         </section>
 
         {/* FOOTER */}
