@@ -100,8 +100,8 @@ export default function Portfolio() {
         <nav className="hidden md:flex gap-8 font-mono text-[11px] text-zinc-400 uppercase tracking-widest font-medium">
             <a href="#specialties" className="hover:text-white transition-colors cursor-pointer">Especialidades</a>
             <a href="#projects" className="hover:text-white transition-colors cursor-pointer">Projetos</a>
-            {/* Link ancora para o footer */}
-            <a href="#contact" className="hover:text-blue-500 transition-colors cursor-pointer">Contato</a>
+            {/* Link direto para email */}
+            <a href="mailto:eduardo.queiroga@live.com" className="hover:text-blue-500 transition-colors cursor-pointer">Contato</a>
         </nav>
       </header>
 
@@ -126,7 +126,7 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* CORE SKILLS - COM CORES ATIVAS */}
+        {/* CORE SKILLS - CORES RESTAURADAS */}
         <section id="specialties" className="mb-40 scroll-mt-28">
           <div className="flex items-end gap-4 mb-10">
              <h2 className="text-3xl font-bold text-white">Core Skills</h2>
@@ -157,7 +157,7 @@ export default function Portfolio() {
               </SpotlightCard>
             </Link>
 
-            {/* 2. EDIÇÃO DE VÍDEO (SKY/BLUE) */}
+            {/* 2. EDIÇÃO DE VÍDEO (SKY) */}
             <Link href="/skills/edicao-video" className="md:col-span-1 block">
               <SpotlightCard 
                 className="rounded-3xl p-10 flex flex-col justify-between bg-zinc-900/40 min-h-[320px] h-full"
@@ -285,8 +285,8 @@ export default function Portfolio() {
             </h2>
           </motion.div>
           
-          {/* BOTÃO "VAMOS CONVERSAR" COM ID PARA SCROLL */}
-          <div id="contact" className="mt-[-6vw] relative z-10 mb-20">
+          <div className="mt-[-6vw] relative z-10 mb-20">
+             {/* BOTÃO DO FOOTER COM MAILTO */}
              <a href="mailto:eduardo.queiroga@live.com" className="inline-flex items-center gap-3 bg-white text-black px-10 py-4 rounded-full font-bold hover:bg-zinc-200 transition-all shadow-xl hover:scale-105 hover:shadow-white/10">
                <MousePointer2 size={16} /> 
                <span className="uppercase tracking-widest text-xs">Vamos Conversar</span>
