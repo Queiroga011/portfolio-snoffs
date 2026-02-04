@@ -17,6 +17,16 @@ export default defineType({
       options: { source: 'title' },
     }),
     defineField({
+      name: 'role',
+      title: 'Categoria / Papel (Ex: n8n + IA)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'year',
+      title: 'Ano do Projeto',
+      type: 'string',
+    }),
+    defineField({
       name: 'image',
       title: 'Capa do Projeto',
       type: 'image',
